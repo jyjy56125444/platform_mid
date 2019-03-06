@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.mid.dao.MidAppVersionDao">
+	<select id="queryObjectDataList" resultType="com.platform.mid.entity.MidAppVersionModel">
+		select
+		*
+		from mobile_version
+		where app_id = #{id}
+	</select>
+
+	<insert id="save" parameterType="com.platform.mid.entity.MidAppVersionModel" useGeneratedKeys="true" keyProperty="id">
+		insert into mobile_version(
+			`app_id`,
+			`version_type`,
+			`version`,
+			`comment`,
+			`download_size`,
+			`download_url`,
+			`scan_img`,
+			`update_time`,
+			`updater`,
+			`create_time`,
+			`creator`)
+		values(
+			#{appId},
+			#{versionType},
+			#{version},
+			#{comment},
+			#{downLoadSize},
+			#{downLoadUrl},
+			#{scanImg},
+			#{updateTime},
+			#{updater},
+			#{createTime},
+			#{creator})
+	</insert>
+
+	<update id="update" parameterType="com.platform.mid.entity.MidAppVersionModel">
+		update mobile_version
+		<set>
+			<if test="version != null">`version` = #{version},</if>
+			<if test="comment != null">`comment` = #{comment},</if>
+			<if test="downLoadSize != null">`download_size` = #{downLoadSize},</if>
+			<if test="downLoadUrl != null">`download_url` = #{downLoadUrl},</if>
+			<if test="scanImg != null">`scan_img` = #{scanImg},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="updater != null">`updater` = #{updater}</if>
+		</set>
+		where app_id = #{appId} and version_type = #{versionType}
+	</update>
+
+</mapper>

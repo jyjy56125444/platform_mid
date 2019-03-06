@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.mid.dao.MidAppUrlDao">
+
+
+	<select id="queryObject" resultType="com.platform.mid.entity.MidAppUrlModel">
+		select t1.*,t2.app_name,t2.app_fullname,t2.app_type,t3.interface_developer from mobile_url t1
+        left join mobile_app t2 on t1.app_id=t2.app_id
+        left join mobile_base_info t3 on t1.app_id=t3.app_id
+        where t1.app_id=#{id}
+	</select>
+
+	<insert id="save" parameterType="com.platform.mid.entity.MidAppUrlModel" useGeneratedKeys="true" keyProperty="id">
+		insert into mobile_url(
+			`app_id`,
+			`app_url_test`,
+			`app_url_format`,
+			`app_url_type`,
+			`app_url_status`,
+			`update_time`,
+			`updater`,
+			`create_time`,
+			`creator`)
+		values(
+			#{appId},
+			#{appUrlTest},
+			#{appUrlFormat},
+			#{appUrlType},
+			#{appUrlStatus},
+			#{updateTime},
+			#{updater},
+			#{createTime},
+			#{creator})
+	</insert>
+
+	<update id="update" parameterType="com.platform.mid.entity.MidAppUrlModel">
+		update mobile_url
+		<set>
+			<if test="appUrlTest != null">`app_url_test` = #{appUrlTest},</if>
+			<if test="appUrlFormat != null">`app_url_format` = #{appUrlFormat},</if>
+			<if test="appUrlStatus != null">`app_url_status` = #{appUrlStatus},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="updater != null">`updater` = #{updater}</if>
+		</set>
+		where app_id = #{appId}
+	</update>
+
+	<delete id="deleteBatch">
+		delete from mobile_url where app_id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

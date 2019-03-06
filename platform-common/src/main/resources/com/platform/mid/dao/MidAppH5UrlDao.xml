@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.mid.dao.MidAppH5UrlDao">
+
+
+	<select id="queryObject" resultType="com.platform.mid.entity.MidAppH5UrlModel">
+		select t1.*,t2.APP_NAME,t2.APP_FULLNAME,T2.APP_TYPE from mobile_h5_url t1,mobile_app t2
+		where t1.app_id = t2.app_id and t1.app_id = #{id}
+	</select>
+
+	<insert id="save" parameterType="com.platform.mid.entity.MidAppH5UrlModel" useGeneratedKeys="true" keyProperty="id">
+		insert into mobile_h5_url(
+			`app_id`,
+			`app_h5_url_test`,
+			`app_h5_url_format`,
+			`app_h5_url_type`,
+			`app_h5_url_status`,
+			`update_time`,
+			`updater`,
+			`create_time`,
+			`creator`)
+		values(
+			#{appId},
+			#{appH5UrlTest},
+			#{appH5UrlFormat},
+			#{appH5UrlType},
+			#{appH5UrlStatus},
+			#{updateTime},
+			#{updater},
+			#{createTime},
+			#{creator})
+	</insert>
+
+	<update id="update" parameterType="com.platform.mid.entity.MidAppH5UrlModel">
+		update mobile_h5_url
+		<set>
+			<if test="appH5UrlTest != null">`app_h5_url_test` = #{appH5UrlTest},</if>
+			<if test="appH5UrlFormat != null">`app_h5_url_format` = #{appH5UrlFormat},</if>
+			<if test="appH5UrlStatus != null">`app_h5_url_status` = #{appH5UrlStatus},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="updater != null">`updater` = #{updater}</if>
+		</set>
+		where app_id = #{appId}
+	</update>
+
+	<delete id="deleteBatch">
+		delete from mobile_h5_url where app_id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.mid.dao.MidSysUserDao">
+    <select id="queryByUserName" resultType="com.platform.mid.entity.MidSysUserModel">
+		select * from plat_users where user_name = #{username}
+	</select>
+
+	<select id="queryList" resultType="com.platform.mid.entity.MidSysUserModel">
+		select
+		*
+		from plat_users
+		WHERE 1=1
+		<if test="userName != null and userName.trim() != ''">
+			and user_name like concat('%',#{userName},'%')
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by user_guid asc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryTotal" resultType="int">
+		select count(*) from plat_users
+		WHERE 1=1
+		<if test="userName != null and userName.trim() != ''">
+			and user_name like concat('%',#{userName},'%')
+		</if>
+	</select>
+
+	<select id="queryObject" resultType="com.platform.mid.entity.MidSysUserModel">
+		select
+			*
+		from plat_users
+		where user_guid = #{id}
+	</select>
+
+	<update id="update" parameterType="com.platform.mid.entity.MidSysUserModel">
+		update plat_users
+		<set>
+			<if test="userName != null">`user_name` = #{userName},</if>
+			<if test="userLev != null">`user_lev` = #{userLev},</if>
+			<if test="userEMail != null">`user_email` = #{userEMail},</if>
+			<if test="userMobile != null">`user_mobile` = #{userMobile},</if>
+			<if test="userStatus != null">`user_status` = #{userStatus}</if>
+		</set>
+		where user_guid = #{userGuid}
+	</update>
+
+	<insert id="save" parameterType="com.platform.mid.entity.MidSysUserModel" useGeneratedKeys="true" keyProperty="id">
+		insert into plat_users(
+			`user_name`,
+			`user_pwd`,
+			`user_lev`,
+			`user_email`,
+			`user_mobile`,
+			`user_status`,
+			`create_time`)
+		values(
+			#{userName},
+			#{userPwd},
+			#{userLev},
+			#{userEMail},
+			#{userMobile},
+			#{userStatus},
+			#{createTime})
+	</insert>
+
+	<update id="updatePassword" parameterType="com.platform.mid.entity.MidSysUserPwdModel">
+		update plat_users set `user_pwd` = #{newPassword}
+			where `user_guid` = #{userId} and `user_pwd` = #{password}
+	</update>
+</mapper>

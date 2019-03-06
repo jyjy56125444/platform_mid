@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.mid.dao.MidAppInfoDao">
+	<select id="queryList" resultType="com.platform.mid.entity.MidAppInfoModel">
+		select
+		t1.*, t2.app_name
+		from mobile_app_info t1,mobile_app t2
+		WHERE t1.app_id = t2.app_id
+		<if test="app_name != null and app_name.trim() != ''">
+			and t2.app_name like concat('%',#{app_name},'%')
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by t1.app_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryTotal" resultType="int">
+		select count(*) from mobile_app_info t1,mobile_app t2
+		WHERE t1.app_id = t2.app_id
+		<if test="app_name != null and app_name.trim() != ''">
+			and t2.app_name like concat('%',#{app_name},'%')
+		</if>
+	</select>
+
+	<select id="queryObject" resultType="com.platform.mid.entity.MidAppInfoModel">
+		select
+			t1.*, t2.app_name
+		from mobile_app_info t1,mobile_app t2
+		where t1.app_id = t2.app_id and t1.app_id = #{id}
+	</select>
+
+	<update id="update" parameterType="com.platform.mid.entity.MidAppInfoModel">
+		update mobile_app_info
+		<set>
+			<if test="packageId != null">`package_id` = #{packageId},</if>
+			<if test="appType != null">`app_type` = #{appType},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="updater != null">`updater` = #{updater}</if>
+		</set>
+		where app_id = #{appId}
+	</update>
+
+	<insert id="save" parameterType="com.platform.mid.entity.MidAppInfoModel" useGeneratedKeys="true" keyProperty="id">
+		insert into mobile_app_info(
+			`app_id`,
+			`package_id`,
+			`app_type`,
+			`update_time`,
+			`updater`,
+			`create_time`,
+			`creator`)
+		values(
+			#{appId},
+			#{packageId},
+			#{appType},
+			#{updateTime},
+			#{updater},
+			#{createTime},
+			#{creator})
+	</insert>
+
+	<delete id="deleteBatch">
+		delete from mobile_app_info where app_id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
