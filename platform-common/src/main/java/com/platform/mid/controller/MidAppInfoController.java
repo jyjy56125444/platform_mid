@@ -2,10 +2,12 @@ package com.platform.mid.controller;
 
 import com.platform.mid.entity.MidAppBaseModel;
 import com.platform.mid.entity.MidAppInfoModel;
+import com.platform.mid.entity.MidAppUrlModel;
 import com.platform.mid.service.MidAppInfoService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import com.platform.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +33,10 @@ public class MidAppInfoController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if(ShiroUtils.getUserEntity() != null) {
+            int user = ShiroUtils.getUserEntity().getUserGuid();
+            query.put("userGuid", user);
+        }
         List<MidAppInfoModel> appList = midAppInfoService.queryList(query);
         int total = midAppInfoService.queryTotal(query);
 

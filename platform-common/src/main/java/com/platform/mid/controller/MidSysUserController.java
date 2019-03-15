@@ -2,6 +2,7 @@ package com.platform.mid.controller;
 
 import com.platform.annotation.SysLog;
 import com.platform.mid.entity.MidAppInfoModel;
+import com.platform.mid.entity.MidAppModel;
 import com.platform.mid.entity.MidSysUserModel;
 import com.platform.mid.entity.MidSysUserPwdModel;
 import com.platform.mid.service.MidSysUserService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,15 @@ public class MidSysUserController {
     }
 
     /**
+     * 查询全部
+     */
+    @RequestMapping("/mid/sys/user/listAll")
+    public R listAll() {
+        List<MidSysUserModel> userList = midSysUserService.queryListAll();
+        return R.ok().put("users", userList);
+    }
+
+    /**
      * 修改
      */
     @RequestMapping("/mid/sys/user/update")
@@ -88,7 +99,9 @@ public class MidSysUserController {
     @RequestMapping("/mid/sys/user/password")
     public R password(@RequestBody MidSysUserPwdModel pwd) {
         //用户id赋值
-        pwd.setUserId(getUserId());
+        if(ShiroUtils.getUserEntity()!=null) {
+            pwd.setUserId(getUserId());
+        }
         //进行非空判断
         if(TextUtils.isEmpty(pwd.getPassword())){
             return R.error("原密码不为能空");

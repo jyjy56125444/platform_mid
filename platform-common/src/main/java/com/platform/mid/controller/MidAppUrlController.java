@@ -61,4 +61,5 @@ public class MidAppUrlController {
         midAppUrlService.update(url);
         return R.ok();
     }
+
 }

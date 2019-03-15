@@ -7,11 +7,11 @@ import java.util.Date;
 
 /**
  * 作者： 王一凡
- * 创建时间： 2019/3/1
+ * 创建时间： 2019/3/7
  * 版权： 江苏远大信息股份有限公司
  * 描述： com.platform.entity
  */
-public class AppLogVo implements Serializable {
+public class DownloadVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int appId;
@@ -20,8 +20,7 @@ public class AppLogVo implements Serializable {
     private String version;
     @ApiModelProperty(value = "应用类型 1-Android 2-iOS")
     private int type;
-    private String operate;
-    private Date createTime;
+    private Date downLoadTime;
 
     public int getAppId() {
         return appId;
@@ -63,19 +62,11 @@ public class AppLogVo implements Serializable {
         this.type = type;
     }
 
-    public String getOperate() {
-        return operate;
+    public Date getDownLoadTime() {
+        return downLoadTime;
     }
 
-    public void setOperate(String operate) {
-        this.operate = operate;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setDownLoadTime(Date downLoadTime) {
+        this.downLoadTime = downLoadTime;
     }
 }

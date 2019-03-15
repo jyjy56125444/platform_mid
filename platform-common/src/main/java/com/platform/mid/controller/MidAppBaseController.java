@@ -5,6 +5,7 @@ import com.platform.mid.service.MidAppBaseService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import com.platform.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,10 @@ public class MidAppBaseController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        if(ShiroUtils.getUserEntity() != null) {
+            int user = ShiroUtils.getUserEntity().getUserGuid();
+            query.put("userGuid", user);
+        }
         List<MidAppBaseModel> appList = midAppBaseService.queryList(query);
         int total = midAppBaseService.queryTotal(query);
 

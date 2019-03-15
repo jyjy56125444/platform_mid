@@ -20,6 +20,8 @@ public class MidSysUserModel implements Serializable {
 
     private String userName;
 
+    private String userRealName;
+
     private String userPwd;
 
     private int userLev;
@@ -46,6 +48,14 @@ public class MidSysUserModel implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserRealName() {
+        return userRealName;
+    }
+
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName;
     }
 
     @JsonIgnore

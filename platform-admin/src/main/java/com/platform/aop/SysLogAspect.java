@@ -8,17 +8,20 @@ import com.platform.mid.service.MidSysLogService;
 import com.platform.utils.HttpContextUtils;
 import com.platform.utils.IPUtils;
 import com.platform.utils.ShiroUtils;
+import jline.internal.Log;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * 系统日志，切面处理类
@@ -66,6 +69,9 @@ public class SysLogAspect {
         //请求的参数
         Object[] args = joinPoint.getArgs();
         String params = JSON.toJSONString(args[0]);
+
+        Log.info("args:"+args.toString());
+        Log.info("params:"+params);
 //        sysLog.setParams(params);
 
         //获取request
@@ -76,11 +82,17 @@ public class SysLogAspect {
         //用户名
         MidSysUserModel sysUserEntity = ShiroUtils.getUserEntity();
         String username = "";
-        if ("login".equals(methodName) || "appLogin".equals(methodName)) {
-            username = params;
-        }
+
         if (null != sysUserEntity) {
             username = ShiroUtils.getUserEntity().getUserName();
+        }else{
+            if ("login".equals(methodName) || "appLogin".equals(methodName)) {
+                username = params;
+            }
+            if ("password".equals(methodName)) {
+                JSONObject js = new JSONObject(args[0]);
+                username = js.get("userName").toString();
+            }
         }
         username = username.replace("\"","");
         sysLog.setUserName(username);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ApiDownloadMapper">
+
+    <insert id="save" parameterType="com.platform.entity.DownloadVo" useGeneratedKeys="true" keyProperty="id">
+		insert into mobile_download_count(
+			`app_id`,
+			`type`,
+			`app_user_name`,
+			`immo`,
+			`version`,
+			`download_time`)
+		values(
+			#{appId},
+			#{type},
+			#{appUserName},
+			#{immo},
+			#{version},
+			#{downLoadTime})
+	</insert>
+</mapper>

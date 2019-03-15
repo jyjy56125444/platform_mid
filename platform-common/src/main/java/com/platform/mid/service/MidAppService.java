@@ -28,6 +28,13 @@ public interface MidAppService {
     List<MidAppModel> queryListAll(Map<String, Object> map);
 
     /**
+     * 全部查询
+     *
+     * @return list
+     */
+    List<MidAppModel> queryListByUser(Map<String, Object> map);
+
+    /**
      * 分页统计总数
      *
      * @param map 参数

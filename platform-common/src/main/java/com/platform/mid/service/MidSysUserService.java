@@ -32,6 +32,13 @@ public interface MidSysUserService {
     int queryTotal(Map<String, Object> map);
 
     /**
+     * 全部查询
+     *
+     * @return list
+     */
+    List<MidSysUserModel> queryListAll();
+
+    /**
      * 根据主键查询实体
      *
      * @param id 主键

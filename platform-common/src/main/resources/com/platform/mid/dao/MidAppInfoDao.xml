@@ -5,8 +5,10 @@
 	<select id="queryList" resultType="com.platform.mid.entity.MidAppInfoModel">
 		select
 		t1.*, t2.app_name
-		from mobile_app_info t1,mobile_app t2
+		from mobile_app_info t1, mobile_app t2, mobile_app_auth t3
 		WHERE t1.app_id = t2.app_id
+		and t1.app_id = t3.app_id
+		and t3.user_guid = #{userGuid}
 		<if test="app_name != null and app_name.trim() != ''">
 			and t2.app_name like concat('%',#{app_name},'%')
 		</if>
@@ -15,7 +17,7 @@
 				order by ${sidx} ${order}
 			</when>
 			<otherwise>
-				order by t1.app_id desc
+				order by app_id desc
 			</otherwise>
 		</choose>
 		<if test="offset != null and limit != null">

@@ -42,6 +42,10 @@ public interface BaseDao<T> {
 
     List<T> queryListAll(Map<String, Object> map);
 
+    List<T> queryListAll();
+
+    List<T> queryListByUser(Map<String, Object> map);
+
     int queryTotal(Map<String, Object> map);
 
     int queryTotal();

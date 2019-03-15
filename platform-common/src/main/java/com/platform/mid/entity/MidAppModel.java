@@ -2,6 +2,7 @@ package com.platform.mid.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 作者： 王一凡
@@ -23,6 +24,16 @@ public class MidAppModel implements Serializable {
     private String updater;
 
     private String type;
+
+    private List<MidAppAuthModel> auth;
+
+    public List<MidAppAuthModel> getAuth() {
+        return auth;
+    }
+
+    public void setAuth(List<MidAppAuthModel> auth) {
+        this.auth = auth;
+    }
 
     public int getAppId() {
         return appId;

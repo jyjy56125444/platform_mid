@@ -36,6 +36,11 @@ public class MidSysUserServiceImpl implements MidSysUserService {
     }
 
     @Override
+    public List<MidSysUserModel> queryListAll() {
+        return userDao.queryListAll();
+    }
+
+    @Override
     public MidSysUserModel queryObject(String id) {
         return userDao.queryObject(id);
     }

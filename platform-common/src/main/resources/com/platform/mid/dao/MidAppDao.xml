@@ -4,11 +4,12 @@
 <mapper namespace="com.platform.mid.dao.MidAppDao">
 	<select id="queryList" resultType="com.platform.mid.entity.MidAppModel">
 		select
-		*
-		from mobile_app
-		WHERE 1=1
+		t1.*
+		from mobile_app t1, mobile_app_auth t2
+		WHERE t1.app_id = t2.app_id
+		and t2.user_guid = #{userGuid}
 		<if test="app_name != null and app_name.trim() != ''">
-			and app_name like concat('%',#{app_name},'%')
+			and t1.app_name like concat('%',#{app_name},'%')
 		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -24,14 +25,24 @@
 	</select>
 
 	<select id="queryListAll" resultType="com.platform.mid.entity.MidAppModel">
-		select * from mobile_app where 1=1
+		select t1.* from mobile_app t1, mobile_app_auth t2
+		where t1.app_id = t2.app_id
+		and t2.user_guid = #{userGuid}
 		<if test="type != null and type.trim() != ''">
-			and app_id not in(
-					select  app_id
-					from    ${type}
-					where   app_id is not null
-					);
+			and t1.app_id not in(
+			select  app_id
+			from    ${type}
+			where   app_id is not null
+			)
 		</if>
+
+	</select>
+
+	<select id="queryListByUser" resultType="com.platform.mid.entity.MidAppModel">
+		select t1.* from mobile_app t1, mobile_app_auth t2
+		where t1.app_id = t2.app_id
+		and t2.user_guid = #{userGuid}
+		order by app_id desc
 	</select>
 
 	<select id="queryTotal" resultType="int">

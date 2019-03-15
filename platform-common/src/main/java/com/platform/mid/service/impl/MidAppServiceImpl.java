@@ -59,4 +59,9 @@ public class MidAppServiceImpl implements MidAppService {
     public List<MidAppModel> queryListAll(Map<String, Object> map) {
         return appDao.queryListAll(map);
     }
+
+    @Override
+    public List<MidAppModel> queryListByUser(Map<String, Object> map) {
+        return appDao.queryListByUser(map);
+    }
 }
